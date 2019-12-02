@@ -61,7 +61,7 @@
                                     {% if product not in memory %}
                                         <form method="post" action="{% url 'off:article' search %}">
                                             {% csrf_token %}
-                                            <input type="hidden" name="id_produit" value="{{ product.id }}" >
+                                            <input type="hidden" name="id_product" value="{{ product.id }}" >
                                             <button type="submit">Sauvegarder</button>
                                         </form>
                                     {% endif %}
