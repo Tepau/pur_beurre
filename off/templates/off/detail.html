@@ -1,0 +1,71 @@
+{% extends 'off/home.html' %}
+{% block css %}
+    <!-- Latest compiled and minified CSS -->
+
+    <style type="text/css">
+          .img-produit { width: 90%; height: 200px; position: relative; }
+          .badge { background-color: green; position: absolute; left: 77%;  font-size: 1.8em; }
+          header { height: 330px; padding-top: 7rem; background: black center url({{ product.url_image }})}
+          #recherche { width: 140px; height: 200px; }
+          .produit { border: 1px solid white; background-color: rgb(248, 225, 193); font-size: 1.5em;}
+          header .row { margin-top: 130px; }
+          #lien { font-size: 1.5em; }
+
+          .liste_nutriscore { font-size: 2.5em; }
+
+          .pager { list-style-type: none; display: flex; justify-content: center; }
+          @media (min-width: 992px) {
+            #mainNav { background-color: white; }
+            #mainNav .navbar-nav .nav-item .nav-link {
+                color: black; }
+            #mainNav .navbar-nav .nav-item .nav-link:hover {
+                color: black;
+  }
+          }
+    </style>
+{% endblock %}
+{% block header %}
+    <header class="text-center">
+        <div class="container ">
+            <div class="row justify-content-center ">
+                <div class="col-md-4 produit" >
+                    <p class="mb-0 font-weight-bold">{{ product.name|capfirst }}</p>
+                </div>
+            </div>
+        </div>
+    </header>
+<hr class="divider light my-2">
+{% endblock %}
+
+
+{% block content %}
+<section class="page-section bg-primary" id="about">
+    <div class="container">
+      <div class="row">
+          <div class="col-sm-6">
+              <div class="row">
+                  <div class="col-sm-12 text-center"><h1>Nutriscore</h1></div>
+                  <div class="col-sm-12 text-center ">
+                      <ul class="list-unstyled d-flex justify-content-center">
+                          {% for nutriscore in nutriscores %}
+                            {% if nutriscore == product_nutriscore %}
+                                <li class="mr-3 liste_nutriscore font-weight-bold">{{ nutriscore|capfirst }}</li>
+                            {% else %}
+                                <li class="mr-3 liste_nutriscore">{{ nutriscore|capfirst }}</li>
+                            {% endif %}
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+          </div>
+
+          <div class="col-sm-6  text-center"><h1>Repères pour 100g</h1></div>
+      </div>
+        <div class="row d-flex justify-content-center">
+            <div class="col-sm-5 text-center mt-2" >
+                <a href="{{ product.url_link }}" id="lien" class="text-decoration-none"><div class="border">Voir la fiche d'OpenFoodFacts</div></a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

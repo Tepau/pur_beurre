@@ -1,0 +1,43 @@
+{% extends 'off/home.html' %}
+{% load static %}
+
+{% block css %}
+    <style type="text/css">
+          header { height: 330px; padding-top: 7rem; background: black center url({% static 'off/img/remy-5.jpg' %}); }
+          header .row { margin-top: 130px; }
+          .produit { border: 1px solid white; background-color: rgb(248, 225, 193); font-size: 1.5em;}
+          .email { font-size: 1.5em; }
+          @media (min-width: 992px) {
+            #mainNav { background-color: white; }
+          }
+          @media (max-width: 768px) {
+              .email {
+                font-size: 1em;
+              }
+            }
+   </style>
+{% endblock%}
+
+{% block header %}
+    <header class="text-center">
+        <div class="container ">
+            <div class="row justify-content-center  ">
+                <div class="col-xs-8 produit" >
+                    <p class="mb-0 font-weight-bold mr-4 ml-4"> {{ user.username|capfirst }}</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+{% block content %}
+<section class="page-section bg-primary " id="about">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+          <div class="col-xs-8 border border-info email">
+              <div class="ml-2 mr-2">{{ user.email }}</div>
+          </div>
+            </div>
+    </div>
+</section>
+{% endblock %}

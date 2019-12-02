@@ -1,0 +1,100 @@
+{% extends 'off/home.html' %}
+{% block css %}
+    <!-- Latest compiled and minified CSS -->
+
+    <style type="text/css">
+          .img-produit { width: 90%; height: 200px; position: relative; }
+          .badge { background-color: green; position: absolute; left: 77%;  font-size: 1.8em; }
+          header { height: 330px; padding-top: 7rem; background: black center url({{ researched_product.url_image }})}
+          #no_product { font-size: 1.3em; }
+
+          .produit { border: 1px solid white; background-color: rgb(248, 225, 193); font-size: 1.5em;}
+          header .row { margin-top: 130px;}
+
+          .pager { list-style-type: none; display: flex; justify-content: center; }
+          @media (min-width: 992px) {
+            #mainNav { background-color: white; }
+            #mainNav .navbar-nav .nav-item .nav-link {
+                color: black; }
+            #mainNav .navbar-nav .nav-item .nav-link:hover {
+                color: black;
+  }
+          }
+    </style>
+{% endblock %}
+
+{% block header %}
+    <header class="text-center">
+        <div class="container ">
+            <div class="row justify-content-center  ">
+                <div class="col-md-3 produit" >
+                    <p class="mb-0 font-weight-bold"> {{ researched_product.name|truncatewords:3|capfirst }}</p>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+
+        <section class="page-section bg-primary " id="about">
+            <div class="container-fluid">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                  <h2 class="text-center ">Vous pouvez remplacer cet aliment par :</h2>
+                  <hr class="divider bg-primary my-4">
+
+                    {% if not products %}
+                        <p id="no_product">Nous n'avons trouvé aucun produit avec une meilleur nutriscore que "{{  researched_product.name }}" !</p>
+
+                    {% else %}
+                       <div class="row">
+
+                        {% for product in products %}
+                        <div class="col-sm-4 col-xs-8 mb-4" >
+                            <div>
+                                <a href="{% url 'off:detail' product.id %}"><img src="{{ product.url_image }}" class="mt-2 mb-2 img-produit"></a>
+                                <span class="badge badge-pill">{{ product.nutriscore|capfirst }}</span>
+                                <p class="font-weight-bold">{{ product.name|capfirst }}</p>
+                                {% if user.is_authenticated %}
+
+                                    {% if product not in memory %}
+                                        <form method="post" action="{% url 'off:article' search %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id_produit" value="{{ product.id }}" >
+                                            <button type="submit">Sauvegarder</button>
+                                        </form>
+                                    {% endif %}
+
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                     {% endif %}
+
+                    </div>
+                </div>
+              </div>
+
+                {% if paginate %}
+                  <div class="row">
+                      <div class="col-lg-12 text-center">
+                          <nav aria-label="">
+                            <ul class="pager">
+                              {% if products.has_previous %}
+                                  <li><a href="?page={{ products.previous_page_number }}">Précédent/</a></li>
+                              {% endif %}
+                              {% if products.has_next %}
+                                  <li><a href="?page={{ products.next_page_number }}">Suivant</a></li>
+                              {% endif %}
+                            </ul>
+                          </nav>
+                      </div>
+                  </div>
+                {% endif %}
+            </div>
+        </section>
+
+{% endblock %}
+
+

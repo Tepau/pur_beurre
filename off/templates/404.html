@@ -1,0 +1,38 @@
+{% extends 'off/home.html' %}
+{% block css %}
+    <!-- Latest compiled and minified CSS -->
+
+    <style type="text/css">
+
+          #no_product { font-size: 1.3em; }
+          header .row { margin-top: 130px;}
+          .pager { list-style-type: none; display: flex; justify-content: center; }
+          @media (min-width: 992px) {
+            #mainNav { background-color: white; }
+            #mainNav .navbar-nav .nav-item .nav-link {
+                color: black; }
+            #mainNav .navbar-nav .nav-item .nav-link:hover {
+                color: black;
+            }
+          }
+    </style>
+{% endblock %}
+
+{% block header %}
+    <header class="page-section bg-primary " id="about">
+            <div class="container-fluid">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <p id="no_product">Désolé nous n'avons pas trouvé un produit de meilleure qualité !</p>
+                    <p><a href="{% url 'home' %}">Revenir à l'accueil</a></p>
+                </div>
+              </div>
+            </div>
+        </header>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+
+
+
