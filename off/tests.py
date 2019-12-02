@@ -14,51 +14,51 @@ class HomePageTestCase(TestCase):
 class ArticlePageTestCase(TestCase):
 
     def setUp(self):
-        product_a = Produit.objects.create(nutriscore="a", name='test_a', url_image='image_a', url_link='url_a')
-        product_b = Produit.objects.create(nutriscore="b", name='test_b', url_image='image_b', url_link='url_b')
-        category = Categorie.objects.create(name="categorie")
-        product_a.categorie.add(Categorie.objects.get(name='categorie'))
-        product_b.categorie.add(Categorie.objects.get(name='categorie'))
-        self.product_a = Produit.objects.get(name='test_a')
-        self.product_b = Produit.objects.get(name='test_b')
+        product_a = Product.objects.create(nutriscore="a", name='test_a', url_image='image_a', url_link='url_a')
+        product_b = Product.objects.create(nutriscore="b", name='test_b', url_image='image_b', url_link='url_b')
+        category = Category.objects.create(name="categorie")
+        product_a.category.add(Category.objects.get(name='categorie'))
+        product_b.category.add(Category.objects.get(name='categorie'))
+        self.product_a = Product.objects.get(name='test_a')
+        self.product_b = Product.objects.get(name='test_b')
         self.client = Client()
         user = User.objects.create_user('test', 'test@email.com', 'password')
-        self.nb_product = user.produit_set.count()
+        self.nb_product = user.product_set.count()
 
     def test_article_page_returns_200(self):
-        product_name = self.product_a.nom
+        product_name = self.product_a.name
         response = self.client.get(reverse('off:article', args=(product_name,)))
         self.assertEqual(response.status_code, 200)
 
     def test_print_product_with_best_nutriscore(self):
-        product_name = self.product_b.nom
+        product_name = self.product_b.name
         response = self.client.get(reverse('off:article', args=(product_name,)))
-        self.assertContains(response, self.product_a.nom.capitalize())
+        self.assertContains(response, self.product_a.name.capitalize())
 
     def test_not_print_product_with_bad_nutriscore(self):
-        product_name = self.product_a.nom
+        product_name = self.product_a.name
         response = self.client.get(reverse('off:article', args=(product_name,)))
-        self.assertNotContains(response, self.product_b.nom.capitalize())
+        self.assertNotContains(response, self.product_b.name.capitalize())
 
     def test_print_form_if_user_is_connect(self):
         self.client.login(username='test', password='password')
-        product_name_a = self.product_a.nom
-        product_name_b = self.product_b.nom
+        product_name_a = self.product_a.name
+        product_name_b = self.product_b.name
         response = self.client.get(reverse('off:article', args=(product_name_b,)))
         self.assertContains(response, 'Sauvegarder')
 
     def test_not_print_form_if_user_is_not_connect(self):
-        product_name_b = self.product_b.nom
+        product_name_b = self.product_b.name
         response = self.client.get(reverse('off:article', args=(product_name_b,)))
         self.assertNotContains(response, 'Sauvegarder')
 
     def test_save_product(self):
         self.client.login(username='test', password='password')
         user = User.objects.get(username='test')
-        data = {'id_produit': self.product_a.id}
-        product_name_b = self.product_b.nom
+        data = {'id_product': self.product_a.id}
+        product_name_b = self.product_b.name
         response = self.client.post(reverse('off:article', args=(product_name_b,)), data)
-        new_nb_product = user.produit_set.count()
+        new_nb_product = user.product_set.count()
         self.assertEqual(new_nb_product, self.nb_product + 1)
 
     def test_article_page_returns_404(self):
@@ -67,7 +67,7 @@ class ArticlePageTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_article_page_return_sentence_if_no_bette_product(self):
-        product_name = self.product_a.nom
+        product_name = self.product_a.name
         response = self.client.get(reverse('off:article', args=(product_name,)))
         self.assertContains(response, "aucun produit")
 
