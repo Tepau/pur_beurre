@@ -44,7 +44,7 @@
                         {% for product in products %}
                         <div class="col-sm-4 col-xs-8 mb-4" >
                             <div>
-                                <a href="{% url 'off:detail' product.id %}"><img src="{{ product.image_url }}" class="mt-2 mb-2 img-produit"></a>
+                                <a href="{% url 'off:detail' product.id %}"><img src="{{ product.url_image }}" class="mt-2 mb-2 img-produit"></a>
                                 <span class="badge badge-pill">{{ product.nutriscore|capfirst }}</span>
                                 <p class="font-weight-bold">{{ product.name }}</p>
                             </div>
